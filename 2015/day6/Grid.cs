@@ -30,6 +30,7 @@ namespace aoc.y2015.day6 {
             for(int y = 0; y < toggleLights.GetLength(0); y++) {
                 for(int x = 0; x < toggleLights.GetLength(1); x++) {
                     toggleLights[y, x].toggleLight();
+                    toggleLights[y, x].increaseBrightness(2);
                 }
             }
         }
@@ -40,29 +41,31 @@ namespace aoc.y2015.day6 {
             for(int y = 0; y < turnOnLights.GetLength(0); y++) {
                 for(int x = 0; x < turnOnLights.GetLength(1); x++) {
                     turnOnLights[y, x].lightsOn = lightsOn;
+                    if(lightsOn) {
+                        turnOnLights[y, x].increaseBrightness(1);
+                    }else{
+                        turnOnLights[y, x].decreaseBrightness(1);
+                    }
                 }
             }
         }
 
         private Light[,] GetAllLightsInArea(int xStart, int yStart, int xEnd, int yEnd) {
-            Light[,] selectedLights = new Light[xEnd-xStart+1, yEnd-yStart+1];
-            int xRelative = 0;
-            int yRelative = 0;
-            for(int y = yStart; y <= yEnd; y++) {
-                for(int x = xStart; x <= xEnd; x++) {
-                    selectedLights[yRelative, xRelative] = this.lights[y, x];
-                    xRelative++;
+            int width = xEnd - xStart + 1;
+            int height = yEnd - yStart + 1;
+            Light[,] areaLights = new Light[height, width];
+            for(int y = 0; y < height; y++) {
+                for(int x = 0; x < width; x++) {
+                    areaLights[y, x] = lights[y + yStart, x + xStart];
                 }
-                xRelative = 0;
-                yRelative++;
             }
-            return selectedLights;
+            return areaLights;
         }
 
         public int GetAmountOfLightsInState(bool lightsOn) {
             int count = 0;
             for(int y = 0; y < lights.GetLength(0); y++) {
-                for(int x = 0; x < lights.GetLength(0); x++) {
+                for(int x = 0; x < lights.GetLength(1); x++) {
                     if(lights[y, x].lightsOn == lightsOn) {
                         count++;
                     }
@@ -70,6 +73,17 @@ namespace aoc.y2015.day6 {
             }
             return count;
         }
+
+        public int GetTotalBrightness() {
+            int brightness = 0;
+            for(int y = 0; y < lights.GetLength(0); y++) {
+                for(int x = 0; x < lights.GetLength(1); x++) {
+                    brightness += lights[y, x].brightness;
+                }
+            }
+            return brightness;
+        }
+
 
         public void PerformCommand(string command) {
             string[] splitCommand = SplitCommand(command);
