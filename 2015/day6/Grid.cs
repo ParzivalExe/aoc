@@ -36,9 +36,9 @@ namespace aoc.y2015.day6 {
 
         private void ChangeLightsTo(int xStart, int yStart, int xEnd, int yEnd, bool lightsOn) {
             Light[,] turnOnLights = GetAllLightsInArea(xStart, yStart, xEnd, yEnd);
+            int testLength = turnOnLights.GetLength(1);
             for(int y = 0; y < turnOnLights.GetLength(0); y++) {
                 for(int x = 0; x < turnOnLights.GetLength(1); x++) {
-                    System.Console.WriteLine("turnOnLight: " + x + "," + y);
                     turnOnLights[y, x].lightsOn = lightsOn;
                 }
             }
@@ -53,6 +53,7 @@ namespace aoc.y2015.day6 {
                     selectedLights[yRelative, xRelative] = this.lights[y, x];
                     xRelative++;
                 }
+                xRelative = 0;
                 yRelative++;
             }
             return selectedLights;
