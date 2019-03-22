@@ -1,0 +1,27 @@
+using System;
+
+namespace aoc.y2015.day3 {
+
+    public class Position {
+
+        public int x {get; set;}
+        public int y {get; set;}
+
+        public Position(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public Position(string positionString) {
+            string[] coordinates = positionString.Split(',');
+            x = Int32.Parse(coordinates[0]);
+            y = Int32.Parse(coordinates[1]);
+        }
+
+        public override string ToString() {
+            return x + "," + y;
+        }
+
+    }
+
+}
