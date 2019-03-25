@@ -1,16 +1,12 @@
 using System;
+using System.Linq;
 
 namespace aoc.test.y2015.day1 {
 
     public static class NotQuiteLisp {
 
-        public static int driveElevator(string cmd) {
-            int floor = 0;
-            foreach(char moveCommand in cmd.ToCharArray()) {
-                floor = GetNewFloor(floor, moveCommand);
-            }
-            return floor;
-        }
+        public static int driveElevator(string cmd) =>
+            cmd.Select(CommandToMovement).Sum();
 
         public static int enterBasement(string cmd) {
             char[] moveCommands = cmd.ToCharArray();
@@ -32,6 +28,15 @@ namespace aoc.test.y2015.day1 {
                 }else{
                     throw new ArgumentException("The char moveCommand is limited to '(' and ')'. You have used " + moveCommand + " instead!");
                 }
+        }
+
+        private static int CommandToMovement(char command) {
+                if(command == '(') {
+                    return + 1;
+                }else if(command == ')') {
+                    return - 1;
+                }
+                return 0;
         }
 
     }
