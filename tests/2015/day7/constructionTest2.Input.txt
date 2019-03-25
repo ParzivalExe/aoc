@@ -1,0 +1,49 @@
+NOT dq -> dr
+kg OR kf -> kh
+ep OR eo -> eq
+44430 -> b
+NOT gs -> gt
+dd OR do -> dp
+eg AND ei -> ej
+y AND ae -> ag
+jx AND jz -> ka
+lf RSHIFT 2 -> lg
+z AND aa -> ac
+dy AND ej -> el
+bj OR bi -> bk
+kk RSHIFT 3 -> km
+NOT cn -> co
+gn AND gp -> gq
+cq AND cs -> ct
+eo LSHIFT 15 -> es
+lg OR lm -> ln
+dy OR ej -> ek
+NOT di -> dj
+300 -> dq
+dq -> kg
+1 AND kg -> ep
+ep -> eo
+NOT ep -> gs
+NOT gs -> dd
+dq AND gs -> do
+do -> eg
+ej -> ei
+1 -> y
+y -> ae
+eg OR ae -> jx
+jx -> jz
+1 AND jx -> lf
+lf -> z
+z AND lf -> aa
+aa -> dy
+NOT ep -> bj
+NOT bj -> bi
+eg OR jx -> kk
+NOT lf -> cn
+NOT y -> gn
+lf -> gp
+di -> cq
+NOT cq -> cs
+400 -> lm
+600 -> di
+bj -> a
