@@ -1,44 +1,30 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using aoc.api;
 
-namespace aoc.test.y2015.day1 {
+namespace aoc.test.y2015.day1
+{
 
     public static class NotQuiteLisp {
 
-        public static int driveElevator(string cmd) =>
-            cmd
+        public static int GetFloor(string instructions) =>
+            instructions
                 .Select(CommandToMovement)
                 .Sum();
 
-        public static int enterBasement(string cmd) => 
-            cmd
+        public static int FindPositionOfBasement(string instructions) => 
+            instructions
                 .Select(CommandToMovement)
                 .AggregatingTakeWhile(
                     1, 
-                    (current, accu) => accu + current, 
-                    (current, accu) => !IsInKeller(accu))
+                    (accu, current) => accu + current, 
+                    (accu, current) => IsAboveBasement(accu))
                 .Count();
         
-        
 
-        private static int CommandToMovement(char command) {
-                if(command == '(') {
-                    return + 1;
-                }else if(command == ')') {
-                    return - 1;
-                }
-                return 0;
-        }
+        private static int CommandToMovement(char command) =>
+            (command == '(') ? +1 : -1;
 
-        private static bool IsInKeller(int floor) {
-            return floor == -1;
-        }
-
-
-        
-
+        private static bool IsAboveBasement(int floor) =>
+            floor >= 0;
     }
-
 }
