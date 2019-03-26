@@ -1,7 +1,7 @@
 using System.Linq;
 using aoc.api;
 
-namespace aoc.test.y2015.day1
+namespace aoc.y2015.day1
 {
 
     public static class NotQuiteLisp {
@@ -15,7 +15,7 @@ namespace aoc.test.y2015.day1
             instructions
                 .Select(CommandToMovement)
                 .AggregatingTakeWhile(
-                    1, 
+                    0, 
                     (accu, current) => accu + current, 
                     (accu, current) => IsAboveBasement(accu))
                 .Count();

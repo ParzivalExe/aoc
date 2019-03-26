@@ -1,8 +1,8 @@
 using System;
 using Xunit;
-using aoc.test.y2015.day1;
+using aoc.y2015.day1;
 
-namespace aoc.y2015.day1
+namespace aoc.test.y2015.day1
 {
     public class Day1
     {
