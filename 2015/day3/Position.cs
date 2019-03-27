@@ -18,6 +18,12 @@ namespace aoc.y2015.day3 {
             y = Int32.Parse(coordinates[1]);
         }
 
+        public Position ApplyOffset((int xOffset, int yOffset) offsetTuble) {
+            x += offsetTuble.xOffset;
+            y += offsetTuble.yOffset;
+            return this;
+        }
+
         public override string ToString() {
             return x + "," + y;
         }

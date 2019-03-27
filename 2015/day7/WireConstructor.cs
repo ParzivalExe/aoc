@@ -13,15 +13,14 @@ namespace aoc.y2015.day7 {
             Construct(constructionPlan);
         }
 
-        public int GetValueForWire(Wire wire) {
+        public int GetValueForWire(Wire wire, string oldwire) {
             return wire.GetValue(this);
         }
-        public int GetValueForWire(string wireId) {
-            return GetValueForWire(GetWireWithId(wireId));
+        public int GetValueForWire(string wireId, string oldwire) {
+            return GetValueForWire(GetWireWithId(wireId), oldwire);
         }
 
         public Wire GetWireWithId(string id) {
-            System.Console.WriteLine("look for id: " + id);
             return wires[id];
         }
 
@@ -76,7 +75,7 @@ namespace aoc.y2015.day7 {
             
             
             //Create Wire and save it
-            Wire wire = new Wire(logicGate);
+            Wire wire = new Wire(logicGate, (string) command[3]);
             wires[(string) command[3]] = wire;
         }
 
