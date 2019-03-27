@@ -8,5 +8,7 @@ namespace aoc.api {
             return File.ReadAllLines(path); 
         }
 
+        
+
     }
 }

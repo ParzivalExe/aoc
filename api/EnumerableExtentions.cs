@@ -44,6 +44,49 @@ namespace aoc.api {
                 }
             }
 
+        public static IEnumerable<TSource> AggregatingStepOver<TSource>(
+            this IEnumerable<TSource> source,
+            Func<TSource, int, int> func) {
+
+                int index = 0;
+                int overstep = 0;
+                foreach(var current in source) {
+                    if(overstep <= 0) {
+                        overstep = func(current, index);
+                        if(overstep <= 0) {
+                            yield return current;
+                            index++;
+                            overstep--;
+                            continue;
+                        }
+                    }
+                    overstep--;
+                    index++;
+                }
+            }
+
+        public static IEnumerable<TSource> AggregatingStepOver<TSource>(
+            this IEnumerable<TSource> source,
+            Func<TSource, int, (int oversteps, TSource replacement)> func) {
+
+                int index = 0;
+                int overstep = 0;
+                foreach(var current in source) {
+                    if(overstep <= 0) {
+                        (int oversteps, TSource replacement) overstepTuple = func(current, index);
+                        overstep = overstepTuple.oversteps;
+                        
+                        if(overstep <= 0) {
+                            yield return current;
+                            index++;
+                            overstep--;
+                            continue;
+                        }
+                    }
+                    overstep--;
+                    index++;
+                }
+            }
 
 
     }
