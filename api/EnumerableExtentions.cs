@@ -71,11 +71,12 @@ namespace aoc.api {
 
                 int index = 0;
                 int overstep = 0;
+                TSource replacement = default(TSource);
                 foreach(var current in source) {
                     if(overstep <= 0) {
                         (int oversteps, TSource replacement) overstepTuple = func(current, index);
                         overstep = overstepTuple.oversteps;
-                        
+                        replacement = overstepTuple.replacement;
                         if(overstep <= 0) {
                             yield return current;
                             index++;
@@ -83,8 +84,32 @@ namespace aoc.api {
                             continue;
                         }
                     }
+                    if(overstep == 1 && replacement != null) {
+                        yield return replacement;
+                    }
                     overstep--;
                     index++;
+                }
+            }
+
+        public static IEnumerable<TSource> AggregatingAddObjects<TSource>(
+            this IEnumerable<TSource> source,
+            Func<TSource, int, TSource> func) {
+
+                int index = 0;
+                TSource placement = default(TSource);
+                foreach(var current in source) {
+                    placement = func(current, index);
+                    if(overstep <= 0) {
+                        yield return current;
+                        index++;
+                        continue;
+                    }
+                }
+                if(placement != null) {
+                    yield return placement;
+                }
+                index++;
                 }
             }
 
