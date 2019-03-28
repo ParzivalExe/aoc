@@ -94,22 +94,17 @@ namespace aoc.api {
 
         public static IEnumerable<TSource> AggregatingAddObjects<TSource>(
             this IEnumerable<TSource> source,
-            Func<TSource, int, TSource> func) {
+            Func<TSource, int, (TSource placement, bool toPlace)> func) {
 
                 int index = 0;
-                TSource placement = default(TSource);
                 foreach(var current in source) {
-                    placement = func(current, index);
-                    if(overstep <= 0) {
-                        yield return current;
-                        index++;
-                        continue;
+                    (TSource placement, bool toPlace) returnTuple = func(current, index);
+                    if(returnTuple.toPlace) {
+                        yield return returnTuple.placement;
                     }
-                }
-                if(placement != null) {
-                    yield return placement;
-                }
-                index++;
+                    yield return current;
+                    index++;
+                    
                 }
             }
 

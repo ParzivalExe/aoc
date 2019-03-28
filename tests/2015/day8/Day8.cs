@@ -25,13 +25,21 @@ namespace aoc.test.y2015.day8 {
         }
 
         [Theory]
-        [InlineData("tests/2015/day8/stringList.Input.txt", 0)]
+        [InlineData("tests/2015/day8/stringList.Input.txt", 2085)]
         public void PartTwo(string path, int expectedResult) {
-            
+            string[] lengthStrings = FileReader.ReadFile(path);
+            int result = lengthStrings
+                .Aggregate(
+                    0,
+                    (accu, current) => 
+                        accu
+                        + StringLengthCalculator.AddEscapeSequencesAndGetLength(current)
+                        - StringLengthCalculator.GetInCodeLength(current));
+            Assert.Equal(expectedResult, result);
         }
 
         [Theory]
-        [InlineData("tests/2015/day8/stringListTest.Input.txt", 29)]
+        [InlineData("tests/2015/day8/stringListTest.Input.txt", 1)]
         public void PartOneTest(string path, int result) {
             string lengthString = FileReader.ReadFile(path)[0];
 
@@ -42,14 +50,14 @@ namespace aoc.test.y2015.day8 {
         }
 
         [Theory]
-        [InlineData("tests/2015/day8/stringListTest.Input.txt", 29)]
+        [InlineData("tests/2015/day8/stringListTest.Input.txt", 5)]
         public void PartTwoTest(string path, int result) {
             string lengthString = FileReader.ReadFile(path)[0];
             int stringLength = lengthString.Length;
             // string newLengthString = StringLengthCalculator.GetInMemoryLength(lengthString).Aggregate("", (accu, current) => accu + current);
-            int newLength = StringLengthCalculator.GetInMemoryLength(lengthString);
+            int stringLengthWithEscapeSequences = StringLengthCalculator.AddEscapeSequencesAndGetLength(lengthString);
 
-            Assert.Equal(result, newLength);
+            Assert.Equal(result, stringLengthWithEscapeSequences - stringLength);
         }
 
 

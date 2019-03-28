@@ -19,26 +19,18 @@ namespace aoc.y2015.day8 {
             calculateString = calculateString.Substring(1, calculateString.Length-2);
             return calculateString
                         .AggregatingStepOver(
-                            (current, index) => LookForEscapeSequence(current, calculateString, index))
+                            (current, index) => LookForEscapeSequenceAndRemoveToManyOnes(current, calculateString, index))
                         .Count();
         }
 
-        public static int AddEscapeSequences(string calculateString) {
-            return calculateString
-        }
+        public static int AddEscapeSequencesAndGetLength(string calculateString) =>
+            calculateString
+                    .AggregatingAddObjects(
+                        (current, index) => LookForEscapeSequenceAndAddThem(current, calculateString, index))
+                    .Count()+2;
 
-        // private static int LookForEscapeSequence(char lookChar, string wholeString, int index) {
-        //     if(lookChar == '\\' && 
-        //         (wholeString.ElementAt(index-1) == '\\' 
-        //         || wholeString.ElementAt(index+1) == '\"')) {
-        //         return 1;
-        //     }else if(lookChar == 'x' && wholeString.ElementAt(index-1) == '\\' && Uri.IsHexDigit(wholeString.ElementAt(index+1)) && Uri.IsHexDigit(wholeString.ElementAt(index+2))) {
-        //          return 3;
-        //     }
-        //     return 0;
-        // }
 
-        private static (int oversteps, char replacement) LookForEscapeSequence(char lookChar, 
+        private static (int oversteps, char replacement) LookForEscapeSequenceAndRemoveToManyOnes(char lookChar, 
                             string wholeString, int index) {
             if(lookChar == '\\' && wholeString.ElementAt(index+1) == '\\') {
                 return (2, '\\');
@@ -48,6 +40,17 @@ namespace aoc.y2015.day8 {
                 return (4, '%');
             }
             return (0, 'N');
+        }
+
+        private static (char, bool) LookForEscapeSequenceAndAddThem(char lookChar, string wholeString, int index) {
+            switch(lookChar) {
+                case '\\':
+                    return ('\\', true);
+                case '\"':
+                    return ('\\', true);
+                default: 
+                    return ('N', false);
+            }
         }
 
         private static bool NextDigitsAreHexString(string toTest) =>
