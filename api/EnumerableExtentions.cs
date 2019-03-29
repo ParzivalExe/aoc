@@ -108,6 +108,43 @@ namespace aoc.api {
                 }
             }
 
+        
+        public static List<TSource> AggregatingRemoveAllDoublings<TSource>(
+            this IEnumerable<TSource> source) {
+                List<TSource> accu = new List<TSource>();
+                foreach(var current in source) {
+                    if(!accu.Contains(current)) {
+                        accu.Add(current);
+                    }
+                }
+                return accu;
+            }
+
+        public static List<TAccumulate> AggregatingAddListsFromInsideListArguments<TSource, TAccumulate>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TAccumulate[]> func) {
+                List<TAccumulate> accu = new List<TAccumulate>();
+                foreach(var current in source) {
+                    TAccumulate[] addList = func(current);
+                    accu.AddRange(addList);
+                }
+
+                return accu;
+            }
+
+        public static List<TSource> AggregatingRemoveNotNeededItems<TSource>(
+            this IEnumerable<TSource> source,
+            Func<TSource, bool> func) {
+                List<TSource> accu = new List<TSource>();
+                foreach(var current in source) {
+                    if(func(current)) {
+                        accu.Add(current); 
+                    }
+                }
+                return accu;
+            }
+
+        
 
     }
 

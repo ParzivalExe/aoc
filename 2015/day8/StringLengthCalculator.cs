@@ -11,10 +11,6 @@ namespace aoc.y2015.day8 {
         public static int GetInCodeLength(string calculateString) =>
             calculateString.Length;
 
-
-        // public static IEnumerable<char> GetInMemoryLength(string calculateString) =>
-        //     calculateString.AggregatingStepOver((current, index) => LookForEscapeSequence(current, calculateString, index));
-
         public static int GetInMemoryLength(string calculateString) {
             calculateString = calculateString.Substring(1, calculateString.Length-2);
             return calculateString

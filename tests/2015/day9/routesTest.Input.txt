@@ -1,0 +1,6 @@
+London to Dublin = 464
+London to Belfast = 518
+London to Canterbury = 300
+Dublin to Belfast = 141
+Dublin to Canterbury = 250
+Belfast to Canterbury = 500

@@ -8,7 +8,7 @@ namespace aoc.y2015.day2 {
         public Present present {get; private set;}
 
         public PresentCalculator(string dimension) {
-            this.present = CreatePresentFromDimention(dimension);
+            this.present = Present.CreatePresentFromDimention(dimension);
         }
 
         private IEnumerable<int> CalculateSurfaces() {
@@ -19,9 +19,6 @@ namespace aoc.y2015.day2 {
             yield return present.Height * present.Length;
             yield return present.Width * present.Length;
         }
-
-        private int CalculateVolume() =>
-            present.Width * present.Height * present.Length;
 
         private int CalculateSmallestCircumference() {
             var edges = new List<int>() {present.Width, present.Height, present.Length};
@@ -36,15 +33,9 @@ namespace aoc.y2015.day2 {
         }
 
         public int CalculateRibbon() {
-            return CalculateSmallestCircumference() + CalculateVolume();
+            return CalculateSmallestCircumference() + present.Volume;
         }
 
-        private Present CreatePresentFromDimention(string dimension) {
-            var edges = dimension
-                .Split('x')
-                .Select(s => Int32.Parse(s));
-            return new Present(edges);
-        }
 
     }
 }

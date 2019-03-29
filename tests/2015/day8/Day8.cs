@@ -43,7 +43,6 @@ namespace aoc.test.y2015.day8 {
         public void PartOneTest(string path, int result) {
             string lengthString = FileReader.ReadFile(path)[0];
 
-            // string newLengthString = StringLengthCalculator.GetInMemoryLength(lengthString).Aggregate("", (accu, current) => accu + current);
             int newLength = StringLengthCalculator.GetInMemoryLength(lengthString);
 
             Assert.Equal(result, newLength);
@@ -54,7 +53,6 @@ namespace aoc.test.y2015.day8 {
         public void PartTwoTest(string path, int result) {
             string lengthString = FileReader.ReadFile(path)[0];
             int stringLength = lengthString.Length;
-            // string newLengthString = StringLengthCalculator.GetInMemoryLength(lengthString).Aggregate("", (accu, current) => accu + current);
             int stringLengthWithEscapeSequences = StringLengthCalculator.AddEscapeSequencesAndGetLength(lengthString);
 
             Assert.Equal(result, stringLengthWithEscapeSequences - stringLength);
