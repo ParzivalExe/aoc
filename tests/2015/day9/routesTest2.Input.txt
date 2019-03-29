@@ -1,0 +1,8 @@
+Oxfort to Canterbury = 10
+Canterbury to Belfast = 20
+Belfast to London = 30
+London to Oxfort = 40
+Oxfort to Liverpool = 50
+Liverpool to Belfast = 60
+London to Liverpool = 5
+London to Dublin = 464

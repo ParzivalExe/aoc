@@ -53,6 +53,10 @@ namespace aoc.y2015.day9 {
             });
         }
 
+
+        private bool RouteConnectsLocation(Route route, string location) =>
+            route.Location1.Equals(location) || route.Location2.Equals(location);
+
         public List<Route> GetRoutesSortedMinToMax() =>
             routes.OrderBy(route => route.distance).ToList();
         public List<Route> GetRoutesSortedMaxToMin() =>
@@ -64,6 +68,13 @@ namespace aoc.y2015.day9 {
 
         private List<string> GetAllLocationsUsedInRoutes(Route[] routes) =>
             routes.AggregatingAddListsFromInsideListArguments(current => current.Locations).AggregatingRemoveAllDoublings();
+
+        private IEnumerable<Route> GetRoutesWithLocation(List<Route> routes, string location) {
+            return routes.AggregatingRemoveNotNeededItems(route => RouteConnectsLocation(route, location));
+        }
+
+        private string GetOtherLocationFromRoute(Route route, string locationToIgnore) =>
+            (route.Location1.Equals(locationToIgnore)) ? route.Location2 : route.Location1;
 
     }
 
