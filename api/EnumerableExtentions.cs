@@ -144,7 +144,7 @@ namespace aoc.api {
                 return accu;
             }
 
-        
+
 
     }
 

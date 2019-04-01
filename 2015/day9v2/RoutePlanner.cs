@@ -1,69 +1,112 @@
 using System.Collections.Generic;
 using System.Linq;
+using System;
 using aoc.api;
 
 namespace aoc.y2015.day9v2 {
 
     public class RoutePlanner {
 
-        
-        public Route[] routes {get; private set;}
+        private IEnumerable<Route> routes;
 
-        public RoutePlanner(string[] routes) {
-            this.routes = CreateRoutes(routes);
+
+        public RoutePlanner(string[] routeStrings) {
+            routes = CreateRoutes(routeStrings);
         }
 
         public int GetShortestRouteLength() {
-            List<string> locations = GetAllLocationsUsedInRoutes(routes);
-            List<Route> sortedRoutes = SortRoutesFromMinToMax(this.routes);
+            List<Route> sortedRoutes = GetRoutesSortedMinToMax();
+            List<string> locations = GetAllLocationsUsedInRoutes(sortedRoutes.ToArray());
+            
+            List<Route> neededRoutes = GetAllNeededRoutes(sortedRoutes, locations);
 
-            string currentLocation = GetLocationWithSmallerRoute(sortedRoutes[0]);
-            List<Route> usedRoutes = new List<Route>();
-            List<string> usedLocations = new List<string>();
-            while(usedLocations.Count <= locations.Count) {
-                Route shortestRoute = SortRoutesFromMinToMax(GetRoutesOfLocation(sortedRoutes, currentLocation).ToArray())[0];
-                usedLocations.Add(currentLocation);
-                string newLocation = GetOtherLocationFromRoute(shortestRoute, currentLocation);
-                if(!usedLocations.Contains(newLocation)) {
-                    //This way is possible and must be saved
-                    usedRoutes.Add(shortestRoute);
-                    currentLocation = newLocation;
-                    continue;
-                }else{
-                    //This way is not possible, because the position we are landing on is already used!
-                    sortedRoutes.Remove(shortestRoute);
-                    continue;
-                }
-            }
-            return usedRoutes.Aggregate(0, (accu, current) => accu + current.distance);
+            neededRoutes.RemoveAt(neededRoutes.Count-1);
+
+            return neededRoutes.Aggregate(0, (accu, current) => accu + current.distance);
         }
 
-        private List<Route> GetRoutesOfLocation(List<Route> routes, string location) =>
-            routes.AggregatingRemoveNotNeededItems(route => RouteConnectsLocation(route, location));
+        public int GetLongestRouteLength() {
+            List<Route> sortedRoutes = GetRoutesSortedMaxToMin();
+            List<string> lcoations = GetAllLocationsUsedInRoutes(sortedRoutes.ToArray());
+
+            List<Route> neededRoutes = GetAllNeededRoutes(sortedRoutes, lcoations);
+
+            // neededRoutes.RemoveAt(neededRoutes.Count-1);
+
+            return neededRoutes.Aggregate(0, (accu, current) => accu + current.distance);
+        }
+
+
+        private List<Route> GetAllNeededRoutes(List<Route> allRoutes, List<string> allLocations) {
+            Dictionary<string, int> locationUses = new Dictionary<string, int>();
+            foreach(string location in allLocations) {
+                locationUses[location] = 0;
+            }
+            //Get general shortest route (maybe there aren't all locations used)
+            List<Route> routes = new List<Route>();
+            routes = allRoutes.AggregatingRemoveNotNeededItems(currentRoute => {
+                int useCountLocation1 = locationUses[currentRoute.Location1];
+                int useCountLocation2 = locationUses[currentRoute.Location2];
+                if(useCountLocation1 < 2 && useCountLocation2 < 2) {
+                    locationUses[currentRoute.Location1] = useCountLocation1+1;
+                    locationUses[currentRoute.Location2] = useCountLocation2+1;
+                    return true;
+                }
+                return false;
+            });
+            //Change route so that all locations are used
+            Dictionary<string, int> locationsNotUsedEnough = new Dictionary<string, int>();
+            foreach(string location in locationUses.Keys) {
+                locationsNotUsedEnough[location] = 2 - locationUses[location];
+            }
+            foreach(string location in locationsNotUsedEnough.Keys) {
+                switch(locationsNotUsedEnough[location]) {
+                    case 2: {
+                        IEnumerable<Route> routesOfLocation = GetRoutesWithLocation(allRoutes, location);
+                        /*#TODO */
+                        break;
+                    }
+                    case 1: {
+                        /*#TODO */
+                        break;
+                    }
+                }
+            }
+            return null; /*#TODO */
+        }
+
 
         private bool RouteConnectsLocation(Route route, string location) =>
             route.Location1.Equals(location) || route.Location2.Equals(location);
 
-        private List<Route> SortRoutesFromMinToMax(Route[] routes) =>
+        public List<Route> GetRoutesSortedMinToMax() =>
             routes.OrderBy(route => route.distance).ToList();
+        public List<Route> GetRoutesSortedMaxToMin() =>
+            routes.OrderByDescending(route => route.distance).ToList();
+
+
+        private Route[] CreateRoutes(string[] routeStrings) =>
+            routeStrings.Select(routeString => new Route(routeString)).ToArray();
 
         private List<string> GetAllLocationsUsedInRoutes(Route[] routes) =>
             routes.AggregatingAddListsFromInsideListArguments(current => current.Locations).AggregatingRemoveAllDoublings();
 
-        private string GetLocationWithSmallerRoute(Route routeOfLocations) {
-            List<Route> routesLoc1 = SortRoutesFromMinToMax(GetRoutesOfLocation(routes.ToList(), routeOfLocations.Location1).ToArray());
-            List<Route> routesLoc2 = SortRoutesFromMinToMax(GetRoutesOfLocation(routes.ToList(), routeOfLocations.Location2).ToArray());
-            routesLoc1.Remove(routeOfLocations);
-            routesLoc2.Remove(routeOfLocations);
-            return (routesLoc1[0].distance > routesLoc2[0].distance) ? routeOfLocations.Location1 : routeOfLocations.Location2;
+        private IEnumerable<Route> GetRoutesWithLocation(List<Route> routes, string location) {
+            return routes.AggregatingRemoveNotNeededItems(route => RouteConnectsLocation(route, location));
         }
+
+        private (Route detour1, Route detour2) GetShortestTwoRouteDetour(List<Route> detourOptions, Route oldRoute) {
+            return detourOptions
+                .Aggregate(
+                    (detour1: detourOptions.ElementAt(0), detour2: detourOptions.ElementAt(1)), 
+                    (accu, current) => /*WORK MUST BE CONTIUED #TODO */(null, null));
+        }
+
+        private Route GetMinRoute(Route route1, Route route2) =>
+            (route1.distance <= route2.distance) ? route1 : route2;
 
         private string GetOtherLocationFromRoute(Route route, string locationToIgnore) =>
             (route.Location1.Equals(locationToIgnore)) ? route.Location2 : route.Location1;
-
-        private Route[] CreateRoutes(string[] routesString) =>
-            routesString.Select(routeString => new Route(routeString)).ToArray();
-
 
     }
 
