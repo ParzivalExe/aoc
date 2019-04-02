@@ -52,6 +52,21 @@ namespace aoc.y2015.day8 {
         private static bool NextDigitsAreHexString(string toTest) =>
             (toTest.ElementAt(0) == 'x' && Uri.IsHexDigit(toTest.ElementAt(1)) && Uri.IsHexDigit(toTest.ElementAt(2)));
 
+
+        public static int CalculateDifferenceBetweenCodeAndMemory(string[] stringsToCalculate) =>
+            stringsToCalculate
+                .Aggregate(
+                    0, 
+                    (accu, current) => 
+                        accu + GetInCodeLength(current) - GetInMemoryLength(current));
+
+        public static int CalculateDifferenceBetweenEncodeAndCode(string[] stringsToCalculate) =>
+            stringsToCalculate
+                .Aggregate(
+                    0,
+                    (accu, current) => 
+                        accu + AddEscapeSequencesAndGetLength(current) - GetInCodeLength(current));
+
     }
 
 }

@@ -22,6 +22,16 @@ namespace aoc.test.y2015.day10 {
             Assert.Equal(expectedResult, LookAndSay.CalculateNumberLengthNew(startNumber, repeates));
         }
 
+        [Theory]
+        [InlineData("1", "11")]
+        [InlineData("11", "21")]
+        [InlineData("112", "2112")]
+        [InlineData("2112", "122112")]
+        [InlineData("1321131112", "11131221133112")]
+        public void TestNumberStringCalculation(string stringToCalculate, string expectedResult) {
+            Assert.Equal(expectedResult, LookAndSay.CalculateNewNumberString(stringToCalculate));
+        }
+
     }
 
 }

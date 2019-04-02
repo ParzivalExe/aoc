@@ -37,10 +37,9 @@ namespace aoc.y2015.day5 {
         }
 
         public int NumberOfDoubleLetters() {
-            char[] characters = usedString.ToCharArray();
             char lastCharacter = ' ';
             int count = 0;
-            foreach(char character in characters) {
+            foreach(char character in usedString) {
                 if(character == lastCharacter) {
                     count++;
                 }
@@ -125,6 +124,8 @@ namespace aoc.y2015.day5 {
             return newCharacters.ToArray();
         }
 
+
+        
 
 
     }
