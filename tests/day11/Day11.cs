@@ -9,7 +9,7 @@ namespace aoc.test.y2015.day11 {
 
         [Fact]
         public void PartOne() {
-            Assert.Equal("vzbxmmnn", PasswordGenerator.GetNextPasswortFrom("vzbxkghb"));
+            Assert.Equal("vzbxxyzz", PasswordGenerator.GetNextPasswortFrom("vzbxkghb"));
         }
 
         [Fact]

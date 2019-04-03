@@ -144,6 +144,34 @@ namespace aoc.api {
                 return accu;
             }
 
+        /*Goes though a list of elements and only if the predicate returns false at one position it emidiatly 
+        breaks and returns false. If it never returns false, it will return true in the end*/
+        public static bool AggregatingIfFalseBreak<TSource>(
+            this IEnumerable<TSource> source,
+            Func<TSource, int, bool> predicate) {
+                int index = 0;
+                foreach(var current in source) {
+                    if(!predicate(current, index)) {
+                        return false;
+                    }
+                    index++;
+                }
+                return true;
+            }
+
+        /*Goes though a list of elements and only if the predicate returns false at one position it emidiatly 
+        breaks and returns false. If it never returns false, it will return true in the end*/
+        public static bool AggregatingIfFalseBreak<TSource>(
+            this IEnumerable<TSource> source,
+            Func<TSource, bool> predicate) {
+                foreach(var current in source) {
+                    if(!predicate(current)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
 
 
     }
