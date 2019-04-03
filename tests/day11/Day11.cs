@@ -12,6 +12,11 @@ namespace aoc.test.y2015.day11 {
             Assert.Equal("vzbxmmnn", PasswordGenerator.GetNextPasswortFrom("vzbxkghb"));
         }
 
+        [Fact]
+        public void PartTwo() {
+            Assert.Equal("vzcaabcc", PasswordGenerator.GetNextPasswortFrom("vzbxkghb", 2));
+        }
+
 
         [Theory]
         [InlineData("abcdefgh", "abcdffaa")]

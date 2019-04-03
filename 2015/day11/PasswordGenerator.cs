@@ -14,12 +14,20 @@ namespace aoc.y2015.day11 {
             return password;
         }
 
+        public static string GetNextPasswortFrom(string startingPassword, int nextCount) {
+            string password = startingPassword;
+            for(int i = 0; i < nextCount; i++) {
+                password = GetNextPasswortFrom(password);
+            }
+            return password;
+        }
+
         public static bool PasswordIsLegit(string password) {
             if(!ContainsOneOfStringParts(new string[]{"i", "o", "l"}, password)) {
                 if(NumberOfDoubleLetters(password) >= 2) {
                     if(NumberOfIncresingThreeLetterFormationsXYZ(password) >= 1) {
-                        if(NotMoreThanTwoEqualLetters(password)) {
-                            return true;
+                        if(NotMoreThanTwoEqualLettersBehind(password)) {
+                                return true;
                         }
                     }
                 }
@@ -70,31 +78,34 @@ namespace aoc.y2015.day11 {
             return containsCount > 0;
         }
 
-        private static int NumberOfIncresingThreeLetterFormationsXYZ(string usedString) =>
-            usedString
-                .Aggregate(
-                    (count: 0, lastLetter: '-'), 
-                    (accu, current) => accu.lastLetter + 1 == current 
-                        ? (accu.count+1, current) 
-                        : (accu.count, current)).count;
+        private static int NumberOfIncresingThreeLetterFormationsXYZ(string usedString) {
+            string buffer = "";
+            int count = 0;
+            foreach(char character in usedString) {
+                if(character == buffer.LastOrDefault()+1) {
+                    if(buffer.Length >= 2) {
+                        count++;
+                    }else{
+                        buffer += character;
+                    }
+                }else{
+                    buffer = character.ToString();
+                }
+            }
+            return count;
+        }
+           
 
-        private static bool NotMoreThanTwoEqualLetters(string usedString) {
-            string usedCharacters = "";
-            for(int i = 0; i < usedString.Length; i++) {
+        private static bool NotMoreThanTwoEqualLettersBehind(string usedString) {
+            for(int i = 2; i < usedString.Length; i++) {
                 char character = usedString.ElementAt(i);
-                if(usedCharacters.Contains(character)) {
+                if(usedString.ElementAt(i-2) == character && usedString.ElementAt(i-1) == character) {
                     return false;
                 }
-                if(usedString.Length > i+1 && i-1 > 0) {
-                    if(usedString.ElementAt(i+1) == character && usedString.ElementAt(i-1) != character) {
-                        continue;
-                    }
-                }
-                usedCharacters += character;
-
             }
             return true;
         }
+
 
     }
 
