@@ -6,11 +6,11 @@ namespace aoc.api {
 
         public static bool StringHasOnlyDigits(string testString) {
             foreach(char character in testString) {
-                if(character < '0' || character > '9') {
-                    return false;
+                if((character > '0' && character < '9') || character == '-') {
+                    return true;
                 }
             }
-            return true;
+            return false;
         }
 
 
